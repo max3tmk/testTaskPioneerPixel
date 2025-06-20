@@ -18,6 +18,7 @@ docker-compose up -d
 
 - PostgreSQL (localhost:5432)
 - Elasticsearch (localhost:9200)
+- Redis (localhost:6379)
 
 3. Перезапустите схему БД вручную
 
