@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: pioneer_pixel_postgres
+    environment:
+      POSTGRES_DB: pioneer_pixel_db
+      POSTGRES_USER: pioneer_user
+      POSTGRES_PASSWORD: pioneer_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pioneer_pixel_pgdata:/var/lib/postgresql/data
+
+  elasticsearch:
+    image: bitnami/elasticsearch:8.10.2
+    container_name: pioneer_pixel_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/bitnami/elasticsearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9200 || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: pioneer_pixel_redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  pioneer_pixel_pgdata:
+  elasticsearch_data:
